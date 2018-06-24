@@ -1,0 +1,32 @@
+.recommendation {
+  .box-sizing(content-box);
+  height: 30px;
+  position: relative;
+  padding-left: 5px;
+  border-radius: 5px;
+  border: 4px solid rgba(0,0,0,0);
+  border-right: 10px solid #1abc9c;
+  border-left: 0 solid;
+  color: rgba(0,0,0,1);
+  background: #1abc9c;
+  position: relative;
+  text-align: center;
+  margin: 1.2em;
+  text-decoration: none;
+}
+
+
+.recommendation::before {
+  .box-sizing(content-box);
+  display: block;
+  position: absolute;
+  content: "";
+  top: -4.1px;
+  right: 98%;
+  border: 12.5px solid rgba(0,0,0,0);
+  border-right: 18px solid #1abc9c;
+  border-left: 0 solid;
+  font: normal 100%/normal Arial, Helvetica, sans-serif;
+  color: rgba(0,0,0,1);
+}
+

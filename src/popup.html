@@ -1,0 +1,326 @@
+<html>
+  <head>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="lib/materialize/materialize.min.css">
+
+    <!-- Import jQuery before materialize.js -->
+    <script type="text/javascript" src="lib/jquery/jquery-3.3.1.min.js"></script>
+
+    <!-- Compiled and minified JavaScript -->
+    <script type="text/javascript" src="lib/materialize/materialize.min.js"></script>
+
+    <!--Import Google Icon Font-->
+    <link href="lib/materialize/google_icons.css" rel="stylesheet">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- Custom CSS and JS -->
+    <link rel="stylesheet" href="css/popup_custom.css">
+    <script type="text/javascript" src="js/popup.js"></script>
+
+  </head>
+
+  <body>
+
+
+    <h2> Welcome to Gentoo, the vuln finder </h2>
+
+    <br>
+    <br>
+
+    <div class="row">
+      <div class="col s8">
+        <span>Action Replay mechanism</span>
+        <div class="switch">
+          <label>
+            Off
+            <input type="checkbox" id="checkboxAR">
+            <span id="actionReplayEnabled" class="lever"></span>
+            On
+          </label>
+        </div>
+        <p><i>In order for the Action Replay mechanism to work as intended, open the DevTools page for the page under inspection by right clicking on the tab and clicking "Inspect". From there, use the page as normal.</i></p>
+
+        <br>
+        <br>
+
+        <span>Passive Mode</span>
+        <div class="switch">
+          <label>
+            Off
+            <input type="checkbox" id="checkboxPassiveMode">
+            <span id="passiveModeEnabled" class="lever"></span>
+            On
+          </label>
+        </div>
+        <p><i>Passive Mode analyses all your incoming and outgoing traffic and flags up any potentially dangerous inputs, highlighted below. It will not make any active requests. Remember to disable Action Replay and Recommendations for true passive mode (no requests made).</i></p>
+
+      </div>
+
+      <div class="col s1 offset-s1">
+          <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#settings">
+            <i class="material-icons">settings</i>
+          </a>
+
+          <div id="settings" class="modal">
+            <div class="modal-content">
+              <h2><i class="material-icons">build</i> Settings </h2>
+              <ul class="collapsible">
+                <li>
+                  <div class="collapsible-header">
+                    <i class="material-icons">comment</i><strong>Recommendations</strong>
+                  </div>
+                  <div class="collapsible-body">
+
+                    <span>Enable / disable recommendations</span>
+                    <div class="switch">
+                      <label>
+                        Off
+                        <input type="checkbox" id="checkboxRecommendations">
+                        <span id="recommendationsEnabled" class="lever"></span>
+                        On
+                      </label>
+                    </div>
+
+                    <h5>Recommendation sensitivity</h5>
+                    <p>This regulates how sensitive the recommendation system is - the more sensitive, the more opportunities for investigation the extension will suggest</p>
+                    <div class="row valign-wrapper">
+                      <div class="col s10">
+                        <form action="#">
+                          <p class="range-field">
+                          <input type="range" id="recommenderSensitivity" min="1" max="3" defaultValue="1" />
+                          </p>
+                        </form>
+                      </div>
+                      <div class="col s2">
+                        <span id="recommenderSensitivityVal"></span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <li>
+                  <div class="collapsible-header">
+                    <i class="material-icons">search</i><strong>Passive Mode</strong>
+                  </div>
+
+                  <div class="collapsible-body">
+
+                    <span>Enable / disable basic CSRF alerts</span>
+                    <div class="switch">
+                      <label>
+                        Off
+                        <input type="checkbox" id="checkboxPassiveCSRF">
+                        <span id="passiveCSRFEnabled" class="lever"></span>
+                        On
+                      </label>
+                    </div>
+
+                    <br>
+                    <br>
+
+                    <span>Enable / disable weak Cookie alerts</span>
+                    <div class="switch">
+                      <label>
+                        Off
+                        <input type="checkbox" id="checkboxPassiveCookies">
+                        <span id="passiveCookiesEnabled" class="lever"></span>
+                        On
+                      </label>
+                    </div>
+
+                    <br>
+                    <br>
+
+
+                    <span>Enable / disable cross request checks - This will check a number of requests before the current one for correlations that could lead to vulnerabilities</span>
+                    <div class="switch">
+                      <label>
+                        Off
+                        <input type="checkbox" id="checkboxPassiveCrossChecks">
+                        <span id="passiveCrossChecksEnabled" class="lever"></span>
+                        On
+                      </label>
+                    </div>
+
+                    <br>
+
+                    <h5>Cross checks window size</h5>
+                    <p>When cross checking, passive mode works by analysing every new request against the previously gathered ones, up to the number defined by this window size. The larger the window, the more work there is to do </p>
+                    <div class="row valign-wrapper">
+                      <div class="col s10">
+                        <form action="#">
+                          <p class="range-field">
+                          <input type="range" id="passiveModeWindowSize" min="2" max="100" defaultValue="3" />
+                          </p>
+                        </form>
+                      </div>
+                      <div class="col s2">
+                        <span id="passiveModeWindowSizeVal"></span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+              </ul>
+            </div>
+
+            <div class="modal-footer">
+              <span>Remember to refresh the page after applying your changes</span>
+              <a id="forgetSettings" href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+              <a id="saveSettings" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Apply changes</a>
+            </div>
+          </div>
+
+
+      </div>
+    </div>
+
+
+
+    <br>
+    <div class="row">
+      <div class="col s12">
+        <ul class="tabs">
+          <li id="xssTab" class="tab col s3"><a class="active" href="#xssContent">XSS</a></li>
+          <li id="passiveTab" class="tab col s3"><a href="#passiveContent">Passive Analysis</a></li>
+          <!-- <li id="authTab" class="tab col s3"><a href="#authContent">Poor Authentication</a></li> -->
+          <!-- <li id=""class="tab col s3"><a href="#test4">Test 4</a></li> -->
+        </ul>
+      </div>
+      <div id="xssContent" class="col s12">
+
+        <p><strong>The following URL's have been detected to have an XSS vulnerability:</strong></p>
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header"><i class="material-icons">flip</i>XSS URL's</div>
+            <div class="collapsible-body" id="xssURLs"></div>
+          </li>
+        </ul>
+
+        <a class="waves-effect waves-light btn btn-small red darken-2 modal-trigger" href="#xssWarning">
+          <i class="material-icons right">clear</i>Clear weak URL list
+        </a>
+
+
+
+        <div id="xssWarning" class="modal">
+          <div class="modal-content">
+            <h4>Remove all URLs with an XSS weakness</h4>
+            <p>This action cannot be undone. Are you sure?</p>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+            <a id="clearXssURLs" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Yes, delete URL list</a>
+          </div>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        <p><strong>The following inputs look like they might potentially lead to an attack:</strong></p>
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header"><i class="material-icons">warning</i>Dangerous inputs</div>
+            <div class="collapsible-body" id="potentialXSS"></div>
+          </li>
+        </ul>
+
+        <a class="waves-effect waves-light btn btn-small red darken-2 modal-trigger" href="#potentialWarning">
+          <i class="material-icons right">clear</i>Clear dangerous input list
+        </a>
+
+        <div id="potentialWarning" class="modal">
+          <div class="modal-content">
+            <h4>Clear list of potentially dangerous inputs</h4>
+            <p>This action cannot be undone. Are you sure?</p>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+            <a id="clearDangerousInputs" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Yes, delete potentially dangerous input list</a>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="passiveContent" class="col s12">
+
+        <p><strong>This is a list of requests detected to have weak header settings:</strong></p>
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header"><i class="material-icons">flag</i>Weak Security headers</div>
+            <div class="collapsible-body" id="insecureRequests"></div>
+          </li>
+        </ul>
+        <a class="waves-effect waves-light btn btn-small red darken-2 modal-trigger" href="#weakHeaderWarning">
+          <i class="material-icons right">clear</i>Clear weak security header list
+        </a>
+
+        <div id="weakHeaderWarning" class="modal">
+          <div class="modal-content">
+            <h4>Clear list of requests with weak security headers</h4>
+            <p>This action cannot be undone. Are you sure?</p>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+            <a id="clearWeakHeaders" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Yes, delete weak security header list</a>
+          </div>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <a id="clearPassiveRequestsButton" class="waves-effect waves-light btn btn-small red darken-2 modal-trigger" href="#passiveRequestWarning">
+          <i class="material-icons right">clear</i>
+        </a>
+
+        <div id="passiveRequestWarning" class="modal">
+          <div class="modal-content">
+            <h4>Clear list of stored passive requests</h4>
+            <p>This action cannot be undone. Are you sure?</p>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+            <a id="clearPassiveRequests" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Yes, delete passive requests</a>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div>
+      <h5>Clear all extension storage content</h5>
+    </div>
+    <a class="waves-effect waves-light btn btn-small red darken-2 modal-trigger" href="#clearExtensionStorage">
+      <i class="material-icons right">clear</i>Delete all extension storage
+    </a>
+
+    <div id="clearExtensionStorage" class="modal">
+      <div class="modal-content">
+        <h4>THIS OPTION RESETS ALL THE CONTENTS OF THE EXTENSION</h4>
+        <p>This action cannot be undone. Are you sure you want to do this?</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+        <a id="deleteExtStorage" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Delete all extension content</a>
+      </div>
+    </div>
+
+
+
+  </body>
+</html>

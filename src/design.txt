@@ -1,0 +1,122 @@
+
+OBJECT TYPES STORED ACROSS THE APP:
+
+  PASSIVE REQUESTS (NEEDS TO ACT LIKE A SLIDING WINDOW, (AS AN EXTENSION: PER DOMAIN)):
+
+    var passiveModeRequests = {
+      [
+        {
+          reqCookies:  [{ name: , value: }],
+          reqParams:   [{ name: , value: }],
+          reqHeaders:  [{ name: , value: }],
+          respCookies: [{ name: , value: }],
+          respHeaders: [{ name: , value: }],
+          respContent: "",
+          url: ""
+        }
+      ]
+    }
+
+  WEAK PASSIVE REQUESTS (Requests with weak headers):
+
+    var passiveModeWeakHeaderRequests = {
+      [
+        {
+          reqCookies:  [{ name: , value: }],
+          reqParams:   [{ name: , value: }],
+          reqHeaders:  [{ name: , value: }],
+          respCookies: [{ name: , value: }],
+          respHeaders: [{ name: , value: }],
+          respContent: "",
+          url: "",
+          warnings: [ "Weak 1", "Weak 2"]
+        }
+      ]
+    }
+
+  CACHED SETTINGS (BUFFER FOR SETTING UPDATES):
+
+    var cachedSettings = {
+      recommenderSensitivity:    "1" / "2" / "3",
+      recommendationsEnabled:    0 / 1,
+      passiveModeCSRFEnabled:    0 / 1,
+      passiveModeCookiesEnabled: 0 / 1,
+      passiveModeCrossChecks:    0 / 1,
+      passiveModeWindowSize:     (number selection, 2+)
+    }
+
+  SETTINGS (STORES ALL SETTINGS IN USE):
+
+    var settings = {
+      recommenderSensitivity:    "1" / "2" / "3",
+      recommendationsEnabled:    0 / 1,
+      passiveModeCSRFEnabled:    0 / 1,
+      passiveModeCookiesEnabled: 0 / 1,
+      passiveModeCrossChecks:    0 / 1,
+      passiveModeWindowSize:     (number selection)
+    }
+
+  INPUTS FOR INSPECTION (STORED UNDER potentialXSS):
+
+    var input = {
+      type: "cookie" / "param" / "header",
+      name: "",
+      value: "",
+      url: ""
+    }
+
+  LIST OF REQUESTS STORED DURING ACTION REPLAY (STORED UNDER ARrequests):
+
+    var ARrequests = {
+      [
+        {
+          reqCookies:  [{ name: , value: }],
+          reqParams:   [{ name: , value: }],
+          reqHeaders:  [{ name: , value: }],
+          respCookies: [{ name: , value: }],
+          respHeaders: [{ name: , value: }],
+          respContent: "",
+          url: ""
+        }
+      ]
+    }
+
+  FLAG FOR WHETHER AR SESSION IS RECORDING OR NOT (UNDER ARsession):
+
+    var ARsession = "finished/recording"
+
+  SWITCH TO EN(DIS)ABLE AR (UNDER enableAR):
+
+    var enableAR = 0 / 1
+
+  SWITCH TO EN(DIS)ABLE PASSIVE MODE (UNDER enablePassiveMode):
+
+    var enablePassiveMode = 0 / 1
+
+
+MESSAGES BEING SENT ACROSS THE APP
+
+> DEVTOOLS TO BACKGROUND ✅
+
+> BACKGROUND TO ACTION REPLAY ✅
+
+> BACKGROUND TO PASSIVE MODE ✅
+
+> BACKGROUND TO POPUP (For badge updates)✅
+  > ReflectedXss
+  > PotentialXSS
+  > WeakHeaderRequest
+
+> REQUEST LOGGER TO POPUP ✅
+  > reflectedXSS
+
+> POPUP TO ACTION REPLAY✅
+
+> AR TO POPUP✅
+  > PotentialXSS
+
+> PASSIVE MODE TO POPUP✅
+  > weakHeaderRequest (this is more of a warning, requests included but they're accessed from storage)
+
+
+

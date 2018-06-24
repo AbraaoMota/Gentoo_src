@@ -1,0 +1,36 @@
+<script>
+  window.onload = function() {
+    var url = new URL(window.location.href);
+
+    var c = url.searchParams.get("injection");
+    if (c) {
+      document.getElementById("output").innerHTML = c;
+    }
+
+    var d = url.searchParams.get("injection2");
+    if (d) {
+      document.getElementById("output2").innerHTML = d;
+    }
+
+    document.cookie = "fake_cookie_1=BOOP;"
+    document.cookie = "session_id=1234565423";
+    document.cookie = "analytics_cookie=BEEP";
+  }
+</script>
+
+<h1>Vulnerability Testing page</h1>
+
+<form id="boop" action="">
+  <input type="text" name="injection" value=""/>
+  <input type="text" name="unused" value="">
+  <input type="submit">
+</form>
+<h2 id="output"></h2>
+
+<form id="beep" action="">
+  <input type="text" name="unused" value=""/>
+  <input type="text" name="injection2" value="">
+  <input type="submit">
+</form>
+<h2 id="output2"></h2>
+

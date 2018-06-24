@@ -1,0 +1,56 @@
+{
+  "manifest_version": 2,
+  "name": "Gentoo",
+  "description": "Find vulnerabilities in sites you're using!",
+  "version": "1.0",
+  "icons": {
+    "16": "img/gentoo.png",
+    "48": "img/gentoo.png",
+    "128": "img/gentoo.png"
+  },
+  "devtools_page": "devtools.html",
+  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ]
+  },
+  "web_accessible_resources": [
+    "request_logger.html"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+       "css": [
+         "css/main.css",
+         "css/action_replay.css"
+       ],
+      "js": [
+        "lib/jquery/jquery-3.3.1.min.js",
+        "lib/jquery_form/jquery.form.js",
+        "js/attacks/style_breakers.js",
+        "js/attacks/xss.js",
+        "js/attacks/all_attacks.js",
+        "js/attack.js",
+        "js/action_replay.js",
+        "js/passive_mode.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "permissions": [
+    "webRequestBlocking",
+    "webRequest",
+    "cookies",
+    "storage",
+    "tabs",
+    "unlimitedStorage",
+    "*://*/*"
+  ],
+  "browser_action": {
+    "default_icon": "img/gentoo.png",
+    "default_popup": "popup.html",
+    "default_title": "Gentoo"
+  },
+  "update_url": "http://0.0.0.0"
+}
